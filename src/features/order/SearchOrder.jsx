@@ -13,9 +13,10 @@ function SearchOrder() {
   return (
     <form onSubmit={handleSubmit}>
       <input
-        placeholder=""
+        placeholder="Search Order #"
         onChange={(e) => setQuery(e.target.value)}
         value={query}
+        className="rounded-full w-40 bg-yellow-100 px-4 py-3 focus:w-72 transition-all duration-300"
       />
     </form>
   );

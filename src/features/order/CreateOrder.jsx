@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Form, redirect } from "react-router-dom";
+import { Form, redirect, useNavigation } from "react-router-dom";
 import { createOrder } from "../../services/apiRestaurant";
+import Button from "../../UI/Button";
 
 // https://uibakery.io/regex-library/phone-number
 // const isValidPhone = (str) =>
@@ -33,6 +34,8 @@ const fakeCart = [
 ];
 
 function CreateOrder() {
+  const navigator = useNavigation();
+  const isSubmitting = navigator.state === "submitting";
   const [withPriority, setWithPriority] = useState(false);
   const cart = fakeCart;
 
@@ -43,25 +46,41 @@ function CreateOrder() {
       <Form method="POST">
         <div>
           <label>First Name</label>
-          <input type="text" name="customer" required />
+          <input
+            type="text"
+            name="customer"
+            required
+            className="rounded-full border border-stone-400 px-4 py-2 focus:ring-offset-yellow-400 w-full"
+          />
         </div>
 
         <div>
           <label>Phone number</label>
           <div>
-            <input type="tel" name="phone" required />
+            <input
+              type="tel"
+              name="phone"
+              required
+              className="rounded-full border border-stone-400 px-4 py-2 focus:ring-offset-yellow-400 w-full"
+            />
           </div>
         </div>
 
         <div>
           <label>Address</label>
           <div>
-            <input type="text" name="address" required />
+            <input
+              type="text"
+              name="address"
+              required
+              className="rounded-full border border-stone-400 px-4 py-2 focus:ring-offset-yellow-400 w-full"
+            />
           </div>
         </div>
 
         <div>
           <input
+            className="h-6 w-6 accent-yellow-400 "
             type="checkbox"
             name="priority"
             id="priority"
@@ -73,7 +92,9 @@ function CreateOrder() {
 
         <div>
           <input type="hidden" name="cart" value={JSON.stringify(cart)} />
-          <button>Order now</button>
+          <Button disabled={isSubmitting}>
+            {isSubmitting ? "Submitting..." : "Order now"}
+          </Button>
         </div>
       </Form>
     </div>

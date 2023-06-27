@@ -4,8 +4,10 @@ import UserName from "../features/user/UserName";
 
 function Header() {
   return (
-    <header>
-      <Link to="/">Fast React Pizza Co.</Link>
+    <header className="bg-yellow-500 uppercase flex justify-between items-center h-[80px]">
+      <Link className="tracking-widest" to="/">
+        Fast React Pizza Co.
+      </Link>
       <SearchOrder />
       <UserName />
     </header>
