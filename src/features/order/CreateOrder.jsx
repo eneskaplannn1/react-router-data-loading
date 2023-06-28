@@ -41,44 +41,46 @@ function CreateOrder() {
 
   return (
     <div>
-      <h2>Ready to order? Let&apos;s go!</h2>
+      <h2 className="my-8 text-xl font-semibold">
+        Ready to order? Let&apos;s go!
+      </h2>
 
-      <Form method="POST">
-        <div>
-          <label>First Name</label>
+      <Form method="POST" className="font-medium">
+        <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-center  ">
+          <label className="basis-60">First Name</label>
           <input
             type="text"
             name="customer"
             required
-            className="rounded-full border border-stone-400 px-4 py-2 focus:ring-offset-yellow-400 w-full"
+            className="grow rounded-full border border-stone-300 px-4 py-2 focus:ring-offset-yellow-400  "
           />
         </div>
 
-        <div>
-          <label>Phone number</label>
-          <div>
+        <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-center">
+          <label className="basis-60">Phone number</label>
+          <div className="grow">
             <input
               type="tel"
               name="phone"
               required
-              className="rounded-full border border-stone-400 px-4 py-2 focus:ring-offset-yellow-400 w-full"
+              className="grow rounded-full border border-stone-300 px-4 py-2 focus:ring-offset-yellow-400 w-full "
             />
           </div>
         </div>
 
-        <div>
-          <label>Address</label>
-          <div>
+        <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-center">
+          <label className="basis-60">Address</label>
+          <div className="grow ">
             <input
               type="text"
               name="address"
               required
-              className="rounded-full border border-stone-400 px-4 py-2 focus:ring-offset-yellow-400 w-full"
-            />
+              className="rounded-full  border border-stone-300 px-4 py-2 focus:ring-offset-yellow-400 w-full"
+            />  
           </div>
         </div>
 
-        <div>
+        <div className="flex items-center space-x-5">
           <input
             className="h-6 w-6 accent-yellow-400 "
             type="checkbox"
@@ -87,12 +89,14 @@ function CreateOrder() {
             value={withPriority}
             onChange={(e) => setWithPriority(e.target.checked)}
           />
-          <label htmlFor="priority">Want to yo give your order priority?</label>
+          <label htmlFor="priority" className="text-lg tracking-widest">
+            Want to yo give your order priority?
+          </label>
         </div>
 
-        <div>
+        <div className="mt-4">
           <input type="hidden" name="cart" value={JSON.stringify(cart)} />
-          <Button disabled={isSubmitting}>
+          <Button disabled={isSubmitting} type="w-60 hover:bg-yellow-300">
             {isSubmitting ? "Submitting..." : "Order now"}
           </Button>
         </div>
