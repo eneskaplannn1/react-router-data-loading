@@ -8,11 +8,12 @@ import ChangeQuantity from "../cart/ChangeQuantity";
 
 function MenuItem({ pizza }) {
   const { id, name, unitPrice, ingredients, soldOut, imageUrl } = pizza;
+
   const dispatch = useDispatch();
 
-  const [item, setItem] = useState({});
-  console.log(!item.quantity);
   const cart = useSelector((state) => state.menu.cart);
+  const currQuantity = cart?.find((item) => item.pizzaId === id);
+  const isInCart = currQuantity?.quantity > 0;
 
   function handleAddCart() {
     const newItem = {
@@ -24,12 +25,6 @@ function MenuItem({ pizza }) {
     };
     dispatch(addItem(newItem));
   }
-
-  useEffect(() => {
-    const newItem = cart.find((item) => item.pizzaId === id);
-    if (!newItem) return;
-    setItem(newItem);
-  }, [cart, id]);
 
   return (
     <li className="flex gap-2 m-4">
@@ -43,10 +38,10 @@ function MenuItem({ pizza }) {
         <p className="italic capitalize">{ingredients.join(", ")}</p>
         <div className="flex items-center justify-between mt-auto uppercase text-xm grow">
           {!soldOut ? <p>{formatCurrency(unitPrice)}</p> : <p>Sold out</p>}
-          {!soldOut && !item.quantity && (
+          {!soldOut && !isInCart && (
             <Button onClick={handleAddCart}>Add to Cart</Button>
           )}
-          {!soldOut && item && item.quantity > 0 && <ChangeQuantity id={id} />}
+          {!soldOut && isInCart && <ChangeQuantity id={id} />}
         </div>
       </div>
     </li>

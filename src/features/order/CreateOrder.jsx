@@ -2,42 +2,15 @@ import { useState } from "react";
 import { Form, redirect, useNavigation } from "react-router-dom";
 import { createOrder } from "../../services/apiRestaurant";
 import Button from "../../UI/Button";
-
-// https://uibakery.io/regex-library/phone-number
-// const isValidPhone = (str) =>
-//   /^\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}$/.test(
-//     str
-//   );
-
-const fakeCart = [
-  {
-    pizzaId: 12,
-    name: "Mediterranean",
-    quantity: 2,
-    unitPrice: 16,
-    totalPrice: 32,
-  },
-  {
-    pizzaId: 6,
-    name: "Vegetale",
-    quantity: 1,
-    unitPrice: 13,
-    totalPrice: 13,
-  },
-  {
-    pizzaId: 11,
-    name: "Spinach and Mushroom",
-    quantity: 1,
-    unitPrice: 15,
-    totalPrice: 15,
-  },
-];
+import { useSelector } from "react-redux";
 
 function CreateOrder() {
   const navigator = useNavigation();
+  console.log(navigator.state);
   const isSubmitting = navigator.state === "submitting";
+
+  const cart = useSelector((state) => state.menu.cart);
   const [withPriority, setWithPriority] = useState(false);
-  const cart = fakeCart;
 
   return (
     <div>
@@ -46,43 +19,43 @@ function CreateOrder() {
       </h2>
 
       <Form method="POST" className="font-medium">
-        <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-center  ">
+        <div className="flex flex-col gap-2 mb-5 sm:flex-row sm:items-center ">
           <label className="basis-60">First Name</label>
           <input
             type="text"
             name="customer"
             required
-            className="grow rounded-full border border-stone-300 px-4 py-2 focus:ring-offset-yellow-400  "
+            className="px-4 py-2 border rounded-full grow border-stone-300 focus:ring-offset-yellow-400 "
           />
         </div>
 
-        <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-center">
+        <div className="flex flex-col gap-2 mb-5 sm:flex-row sm:items-center">
           <label className="basis-60">Phone number</label>
           <div className="grow">
             <input
               type="tel"
               name="phone"
               required
-              className="grow rounded-full border border-stone-300 px-4 py-2 focus:ring-offset-yellow-400 w-full "
+              className="w-full px-4 py-2 border rounded-full grow border-stone-300 focus:ring-offset-yellow-400 "
             />
           </div>
         </div>
 
-        <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-center">
+        <div className="flex flex-col gap-2 mb-5 sm:flex-row sm:items-center">
           <label className="basis-60">Address</label>
           <div className="grow ">
             <input
               type="text"
               name="address"
               required
-              className="rounded-full  border border-stone-300 px-4 py-2 focus:ring-offset-yellow-400 w-full"
-            />  
+              className="w-full px-4 py-2 border rounded-full border-stone-300 focus:ring-offset-yellow-400"
+            />
           </div>
         </div>
 
         <div className="flex items-center space-x-5">
           <input
-            className="h-6 w-6 accent-yellow-400 "
+            className="w-6 h-6 accent-yellow-400 "
             type="checkbox"
             name="priority"
             id="priority"
@@ -114,7 +87,6 @@ export async function action({ request }) {
     priority: data.priority === "true",
   };
   const newOrder = await createOrder(order);
-  console.log(newOrder);
 
   return redirect(`/order/${newOrder.id}`);
 }

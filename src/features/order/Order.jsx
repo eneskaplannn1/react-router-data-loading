@@ -8,40 +8,42 @@ import {
   formatDate,
 } from "../../utils/helpers";
 import OrderItem from "./OrderItem";
+import { useDispatch } from "react-redux";
+import { clearCart } from "../cart/CartSlice";
+import Button from "../../UI/Button";
+import { useState } from "react";
 
 function Order() {
   const data = useLoaderData();
-  const {
-    id,
-    status,
-    priority,
-    priorityPrice,
-    orderPrice,
-    estimatedDelivery,
-    cart,
-  } = data;
-  console.log(cart);
+  const { id, status, orderPrice, estimatedDelivery, cart } = data;
+
+  const [priority, setPriority] = useState(data.priority);
+  const priorityPrice = (orderPrice * 2) / 10;
+
   const deliveryIn = calcMinutesLeft(estimatedDelivery);
+
+  const dispatch = useDispatch();
+  dispatch(clearCart());
 
   return (
     <div className="my-4">
-      <div className=" p-4 flex justify-between items-center ">
+      <div className="flex items-center justify-between p-4 ">
         <h2 className="text-2xl font-semibold">Order #{id} status</h2>
-        <div className="space-x-4 text-white font-medium">
+        <div className="space-x-4 font-medium text-white">
           {priority && (
-            <span className="bg-red-500 p-2 rounded-full">Priority</span>
+            <span className="p-2 bg-red-500 rounded-full">Priority</span>
           )}
-          <span className="bg-green-500 p-2 rounded-full">{status} order</span>
+          <span className="p-2 bg-green-500 rounded-full">{status} order</span>
         </div>
       </div>
 
-      <div className="bg-stone-200 mt-4 flex items-center justify-between p-4">
-        <p className="font-medium text-xl">
+      <div className="flex items-center justify-between p-4 mt-4 bg-stone-200">
+        <p className="text-xl font-medium">
           {deliveryIn >= 0
             ? `Only ${calcMinutesLeft(estimatedDelivery)} minutes left 😃`
             : "Order should have arrived"}
         </p>
-        <p className="font-light text-sm">
+        <p className="text-sm font-light">
           (Estimated delivery: {formatDate(estimatedDelivery)})
         </p>
       </div>
@@ -52,13 +54,19 @@ function Order() {
         ))}
       </ul>
 
-      <div className="bg-stone-300 p-8 tracking-widest">
+      <div className="p-8 tracking-widest bg-stone-300">
         <p>Price pizza: {formatCurrency(orderPrice)}</p>
         {priority && <p>Price priority: {formatCurrency(priorityPrice)}</p>}
-        <p className="font-semibold text-lg mt-2">
+        <p className="mt-2 text-lg font-semibold">
           To pay on delivery: {formatCurrency(orderPrice + priorityPrice)}
         </p>
       </div>
+
+      {!priority && (
+        <div className="flex justify-end my-4">
+          <Button onClick={() => setPriority(true)}>Make Priority</Button>
+        </div>
+      )}
     </div>
   );
 }
